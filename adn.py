@@ -1,4 +1,3 @@
-
 conversion_table = {
 'ATA':'I',
 'ATC':'I',
@@ -66,53 +65,36 @@ conversion_table = {
 'TGG':'W',
 }
 
-sample = {
-     "T": [1, 0, 0, 2, 2],
-     "C": [2, 3, 2, 1, 0],
-     "A": [2, 1, 2, 1, 2],
-     "G": [0, 1, 1, 1, 1]
-}
 
 
-def main():
-    list_data = readFile()
-    # three_groups_list = breakThreeNucleotides(list_data)
-    # print(three_groups_list)
-    # displayFile(three_groups_list)
-    # converting(three_groups_list, conversion_table)
-    
-    twenty_five_groups_list = breakTwentyFiveNucleotides(list_data)
-    #print(twenty_five_groups_list)
-    #displayFile(twenty_five_groups_list)
-    five_groups_list = breakFiveNucleotides(twenty_five_groups_list)
-    print(five_groups_list)
-    #displayComplexFile(five_groups_list)
-    calculateRecurrences(five_groups_list)
-   
-  
 
-def readFile():
+def read_file():
     with open("data.txt", "r") as file:
        content = file.read()  
     return content
 
-def breakThreeNucleotides(text):
+
+def break_three_nucleotides(text):
     result = [text[i:i+3] for i in range(0, len(text), 3)]
     return result
 
-def breakTwentyFiveNucleotides(text):
+
+def break_twenty_five_nucleotides(text):
     result = [text[i:i+25] for i in range(0, len(text), 25)]
     return result
 
-def displayFile(text):
+
+def display_file(text):
     for line in text:
         print(line)
 
-def displayComplexFile(text):
+
+def display_complex_file(text):
     for line in text:
         print()
         for group in line:
             print(group)        
+   
     
 def converting(text, dico):
     for line in text:
@@ -120,7 +102,8 @@ def converting(text, dico):
             if line == key:
                 print(value, end="")   
 
-def breakFiveNucleotides(text):
+
+def break_five_nucleotides(text):
     lst = []
     for line in text:
         #print(f"🥝 {line}")
@@ -129,7 +112,8 @@ def breakFiveNucleotides(text):
         #print(f"🍉 {result}")
     return lst    
 
-def calculateRecurrences(list):
+
+def calculate_recurrences(list):
     list_of_nucleotides = ["T", "C", "A", "G"]
                 
     for sublist in list:
@@ -144,14 +128,14 @@ def calculateRecurrences(list):
                     #print(index, " : ", value)
                     if i == value:
                         counter[index] +=1
-            print(f"🌸 {i}, {counter}")  
+            # print(f"🌸 {i}, {counter}")  
             dico[i] = counter
-        print(f"🪻 {dico}")
-        reccurences = getOrderBySublist(sample)
+        # print(f"🪻 {dico}")
+        reccurences = get_order_by_sublist(dico)
         print()        
 
 
-def getOrderBySublist(dico):
+def get_order_by_sublist(dico):
     winner_list = []
     
     #on prend la vue de toutes les listes et de leurs valeurs; on les transforme en une grande liste; on prend la longueur de la 1re liste et on itère dessus:
@@ -177,7 +161,33 @@ def getOrderBySublist(dico):
     print(f"🌈 winner list : {winner_list}") 
     return winner_list            
         
-                                
+
+
+
+def main():
+    list_data = read_file()
+     
+    #  ------- PARTIE A ------
+    # Etape 1: on découpe en séquences de 3 nucléotides
+    three_groups_list = break_three_nucleotides(list_data)
+    print(three_groups_list)
+    display_file(three_groups_list)
+    # Etape 2: on convertit
+    converting(three_groups_list, conversion_table)
+    
+    
+    # ------ PARTIE B ------
+    # Etape 1: on découpe en séquences de 25 nucléotides
+    twenty_five_groups_list = break_twenty_five_nucleotides(list_data)
+    print(twenty_five_groups_list)
+    display_file(twenty_five_groups_list)
+    # Etape 2: on affine en découpant les groupes de 25 nucléotides en 5 séquences de 5 nucléotides
+    five_groups_list = break_five_nucleotides(twenty_five_groups_list)
+    print(five_groups_list)
+    # Etapes 3 et 4: on calcule les récurrences de nucléotides et on classe par ordre décroissant les récurrences
+    display_complex_file(five_groups_list)
+    calculate_recurrences(five_groups_list)                                
+  
             
 main()
 
